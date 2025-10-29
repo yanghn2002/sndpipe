@@ -63,7 +63,7 @@ double duration;
 int args_each(char* arg_opts, int argc, char*argv[],\
 const struct args_help_s* args_help) {
 
-    while((key = getopt(argc, argv, "C:F:S:D:B:w:a:f:p:")) != -1) {
+    while((key = getopt(argc, argv, arg_opts)) != -1) {
         switch(key) {
             case 'C':
                 channels = str2ssize(optarg);
@@ -97,11 +97,6 @@ const struct args_help_s* args_help) {
     }
     
     free(arg_opts);
-
-    if(args_base.batch_size % args_base.channels != 0) {
-        fputs("batch_size % channels not 0", stderr);
-        exit(EXIT_FAILURE);
-    }
 
     return -1;
 
