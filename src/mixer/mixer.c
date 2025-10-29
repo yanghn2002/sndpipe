@@ -18,7 +18,7 @@ struct {
 
 const struct args_help_s args_help[] = {
     { 'a', "Amplitude" },
-    { '\0', "<input-1-fifo> [input-x-fifo] < limite-fifo > mixed-fifo" },
+    { '\0', "<input-1-fifo> [input-x-fifo ...] < limite-fifo > mixed-fifo" },
 };
 
 int parsearg(int argc, char* argv[]) {
@@ -49,7 +49,7 @@ int parsearg(int argc, char* argv[]) {
 int main(int argc, char* argv[]) {
     
     int curr_argc = parsearg(argc, argv);
-    if(argc - curr_argc < 2) usage_exit(argv[0], args_help);
+    if(argc - curr_argc < 1) usage_exit(argv[0], args_help);
     
     pcmbuf_t* pcmbuf_result = pcmbuf_init_from_stdio(
         args_base.batch_size, args_base.channels, stdout, args_base.format);

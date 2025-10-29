@@ -29,9 +29,9 @@ struct {
 
 const struct args_help_s args_help[] = {
 #if CHANNELS_TASK == split
-    { '\0', "<output-1-fifo> [output-x-fifo] < input-fifo" },
+    { '\0', "<output-1-fifo> [output-x-fifo .. ] < input-fifo" },
 #elif CHANNELS_TASK == combine
-    { '\0', "<input-1-fifo> [input-x-fifo] < output-fifo" },
+    { '\0', "<input-1-fifo> <input-x-fifo ...> > output-fifo" },
 #endif
 };
 
@@ -49,17 +49,22 @@ int parsearg(int argc, char* argv[]) {
 
 }
 
-
+#if CHANNELS_TASK == split
+    #define PCMBUF_INIT_FROM_STDIO stdin
+#endif
+#if CHANNELS_TASK == combine
+    #define PCMBUF_INIT_FROM_STDIO stdout
+#endif
 int main(int argc, char* argv[]) {
     
     int curr_argc = parsearg(argc, argv);
     int channels = argc - curr_argc;
 
 #if CHANNELS_TASK == split
-        #define PCMBUF_INIT_FROM_STDIO stdin
+    if(channels < 1) usage_exit(argv[0], args_help);
 #endif
 #if CHANNELS_TASK == combine
-        #define PCMBUF_INIT_FROM_STDIO stdout
+    if(channels < 2) usage_exit(argv[0], args_help);
 #endif
     pcmbuf_t* pcmbuf_stdio = pcmbuf_init_from_stdio(
         args_base.batch_size, args_base.channels, PCMBUF_INIT_FROM_STDIO, args_base.format);
@@ -68,7 +73,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
     if(channels != args_base.channels) {
-        fprintf(stderr, "Channels not match (%d/%ld).",
+        fprintf(stderr, "Channels not match (%d/%ld).\n",
             channels, args_base.channels);
         return EXIT_FAILURE;
     }

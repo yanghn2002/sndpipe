@@ -12,7 +12,7 @@ struct args_base_s args_base =\
 const char keys_base[] = "C:F:S:B:D:";
 
 const struct args_help_s args_help_base[] = {
-    { 'C', "Channele" },
+    { 'C', "Channele (>0)" },
     { 'F', "Format" },
     { 'S', "Sample Rate (each channel)" },
     { 'B', "Batch Size (each channel)" },
@@ -67,27 +67,28 @@ const struct args_help_s* args_help) {
         switch(key) {
             case 'C':
                 channels = str2ssize(optarg);
-                if(channels == -1) return 1;
+                if(channels == -1) usage_exit(argv[0], args_help);
+                else if(channels == 0.) usage_exit(argv[0], args_help);
                 else args_base.channels = channels;
                 break;
             case 'F':
                 if(!strcmp(optarg, "S16"))
                     args_base.format = PCM_F_S16;
-                else return 1;
+                else usage_exit(argv[0], args_help);
                 break;
             case 'S':
                 sample_rate = str2ssize(optarg);
-                if(sample_rate == -1) return 1;
+                if(sample_rate == -1) usage_exit(argv[0], args_help);
                 else args_base.sample_rate = sample_rate;
                 break;
             case 'B':
                 batch_size = str2ssize(optarg);
-                if(batch_size == -1) return 1;
+                if(batch_size == -1) usage_exit(argv[0], args_help);
                 else args_base.batch_size = batch_size;
                 break;
             case 'D':
                 duration = str2double(optarg);
-                if(duration == -1) return 1;
+                if(duration == -1) usage_exit(argv[0], args_help);
                 else args_base.duration = duration;
                 break;
             case '?': usage_exit(argv[0], args_help);
