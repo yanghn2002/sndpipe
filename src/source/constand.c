@@ -38,6 +38,11 @@ int parsearg(int argc, char* argv[]) {
                 break;
         }
     }
+    
+    if(args_base.duration <= 0.) {
+        fputs("Duration is required\n", stderr);
+        goto ARGS_ERROR;
+    }
 
     return optind;
     

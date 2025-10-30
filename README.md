@@ -29,19 +29,19 @@ sp-square -D1 -a0.5 | aplay -c2
 
 ### mixer
 ```shell
-sp-constand -a0.5 | sp-mixer -D1\
-                                <(sp-saw -f$C4)\
-                                <(sp-saw -f$E4)\
-                                <(sp-saw -f$G4)\
-                                <(sp-saw -f$C5)\
-                                | aplay
+sp-constand -D1 -a0.5 | sp-mixer -D1\
+                                   <(sp-saw -D1 -f$C4)\
+                                   <(sp-saw -D1 -f$E4)\
+                                   <(sp-saw -D1 -f$G4)\
+                                   <(sp-saw -D1 -f$C5)\
+                                   | aplay
 ```
 
 ### channels
 ```shell
 sp-sine -D1 | sp-split >(aplay -c1) /dev/null
 sp-combine -D1\
-              <(sp-sine -C1 -a0.5 -f500)\
-              <(sp-sine -C1 -a0.5 -f1000)\
+              <(sp-sine -D1 -C1 -a0.5 -f500)\
+              <(sp-sine -D1 -C1 -a0.5 -f1000)\
               | aplay -c2
 ```
