@@ -6,10 +6,9 @@
 #include "buffer.h"
 
 
-#define PI_ALIAS\
-    extern const double _4pi;\
-    extern const double _2pi;\
-    extern const double _pi;\
+extern const double _4pi;
+extern const double _2pi;
+extern const double _pi;
 
 
 typedef double(wave_lambda_t)(double);

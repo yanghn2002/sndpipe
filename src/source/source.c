@@ -2,9 +2,6 @@
 #include "source/source.h"
 
 
-PI_ALIAS
-
-
 source_t* source_init(
 wave_lambda_t* wave_lambda,
 size_t channels, size_t sample_rate, double amplitude, double frequency, double phi) {
