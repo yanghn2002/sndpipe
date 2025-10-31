@@ -39,7 +39,7 @@ sp-constand -D1 -a0.5 | sp-mixer -D1\
 
 ### channels
 ```shell
-sp-sine -D1 | sp-split >(aplay -c1) /dev/null
+sp-sine -D1 | sp-split -D1 >(aplay -c1) /dev/null
 sp-combine -D1\
               <(sp-sine -D1 -C1 -a0.5 -f500)\
               <(sp-sine -D1 -C1 -a0.5 -f1000)\
