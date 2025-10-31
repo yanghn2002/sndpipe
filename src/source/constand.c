@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
         perror("timer_init");
         return EXIT_FAILURE;
     }
+    source_timer_init();
 
     int ret = 0;
     while(!ret) {
@@ -93,15 +94,19 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        ret = source_to_buffer(source, pcmbuf->buffer);
-        if(ret) {
-            perror("source_to_buffer");
-            break;
-        }
-        ret = pcmbuf_output(pcmbuf);
-        if(ret) {
-            perror("pcmbuf_output");
-            break;
+        if(!source_timer_check()) {
+
+            ret = source_to_buffer(source, pcmbuf->buffer);
+            if(ret) {
+                perror("source_to_buffer");
+                break;
+            }
+            ret = pcmbuf_output(pcmbuf);
+            if(ret) {
+                perror("pcmbuf_output");
+                break;
+            }
+
         }
 
     }

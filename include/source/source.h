@@ -22,4 +22,10 @@ void source_free(source_t*);
 int source_to_buffer(source_t*, buffer_t*);
 
 
+extern double batch_interval;
+extern double total_generated;
+void source_timer_init(void);
+int source_timer_check(void);
+
+
 #endif//__SNDPIPE_SOURCE

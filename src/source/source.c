@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "utils.h"
 #include "source/source.h"
 
 
@@ -44,5 +45,25 @@ int source_to_buffer(source_t* source, buffer_t* buffer) {
     source->_phi_curr = phi_b;
 
     return 0;
+
+}
+
+
+double batch_interval, total_generated;
+
+void source_timer_init(void) {
+
+    batch_interval = (double)args_base.batch_size / args_base.sample_rate;
+    total_generated = 0.;
+
+}
+
+int source_timer_check(void) {
+
+    if(total_generated > args_base.duration) return 1;
+    else {
+        total_generated += batch_interval;
+        return 0;
+    }
 
 }
