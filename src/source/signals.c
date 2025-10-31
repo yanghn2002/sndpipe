@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
             }
             ret = pcmbuf_output(pcmbuf);
             if(ret) {
-                perror("pcmbuf_output");
+                if(ret < 0) perror("pcmbuf_output");
                 break;
             }
 

@@ -101,13 +101,13 @@ int main(int argc, char* argv[]) {
         
         ret = pcmbuf_input(pcmbuf_limite);
         if(ret) {
-            perror("pcmbuf_input");
+            if(ret < 0) perror("pcmbuf_input");
             break;
         }
         for(size_t index_i = 0; index_i < inpnum; index_i++) {
             ret = pcmbuf_input(pcmbuf_inputs[index_i]);
             if(ret) {
-                perror("pcmbuf_input");
+                if(ret < 0) perror("pcmbuf_input");
                 break;
             }
             FOR_BUFFER(index_b, pcmbuf_result->buffer) { // mix in double
@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
         
         ret = pcmbuf_output(pcmbuf_result);
         if(ret) {
-            perror("pcmbuf_output");
+            if(ret < 0) perror("pcmbuf_output");
             break;
         }
 

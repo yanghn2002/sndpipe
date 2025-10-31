@@ -53,7 +53,7 @@ double batch_interval, total_generated;
 
 void source_timer_init(void) {
 
-    batch_interval = (double)args_base.batch_size / args_base.sample_rate;
+    batch_interval = (double)(args_base.batch_size + 1) / args_base.sample_rate;
     total_generated = 0.;
 
 }

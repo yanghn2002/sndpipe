@@ -67,7 +67,7 @@ int buffer_input(buffer_t* buffer, pcmio_t* pcmio) {
             return _buffer_input_s16(buffer, pcmio);
         default:
             errno = EINVAL;
-            return 1;
+            return -1;
     }
 
     return 0;
@@ -78,8 +78,10 @@ int _buffer_input_s16(buffer_t* buffer, pcmio_t* pcmio) {
 
     FOR_BUFFER(index, buffer) {
         static int16_t sample;
-        if(fread(&sample, -PCM_F_S16, 1, pcmio->file) != 1)
-            return 1;
+        int read = fread(&sample, -PCM_F_S16, 1, pcmio->file);
+        if(read != 1) 
+            if(read) return -1;
+            else return 1;
         buffer->data[index] = ((double)sample) / INT16_MAX;
     }
 
@@ -95,7 +97,7 @@ int buffer_output(buffer_t* buffer, pcmio_t* pcmio) {
             return _buffer_output_s16(buffer, pcmio);
         default:
             errno = EINVAL;
-            return 1;
+            return -1;
     }
 
     return 0;
@@ -109,8 +111,10 @@ int _buffer_output_s16(buffer_t* buffer, pcmio_t* pcmio) {
         if(buffer->data[index] > 1.) buffer->data[index] = 1.; // overdrive, cut
         else if(buffer->data[index] < -1.) buffer->data[index] = -1.;
         sample = (int16_t)(buffer->data[index] * INT16_MAX);
-        if(fwrite(&sample, -PCM_F_S16, 1, pcmio->file) != 1)
-            return 1;
+        int write = fwrite(&sample, -PCM_F_S16, 1, pcmio->file);
+        if(write != 1)
+            if(write) return -1;
+            else return 1;
     }
     fflush(stdout);
 

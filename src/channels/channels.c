@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 #if CHANNELS_TASK == split
         ret = pcmbuf_input(pcmbuf_stdio);
         if(ret) {
-            perror("pcmbuf_input");
+            if(ret < 0) perror("pcmbuf_input");
             break;
         }
 #endif
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
         for(size_t index = 0; index < args_base.channels; index++) {
             ret = pcmbuf_input(pcmbuf_fifos[index]);
             if(ret) {
-                perror("pcmbuf_input");
+                if(ret < 0) perror("pcmbuf_input");
                 break;
             }
         }
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
         for(size_t index = 0; index < args_base.channels; index++) {
             ret = pcmbuf_output(pcmbuf_fifos[index]);
             if(ret) {
-                perror("pcmbuf_output");
+                if(ret) perror("pcmbuf_output");
                 break;
             }
         }
@@ -162,7 +162,7 @@ int main(int argc, char* argv[]) {
 #if CHANNELS_TASK == combine
         ret = pcmbuf_output(pcmbuf_stdio);
         if(ret) {
-            perror("pcmbuf_output");
+            if(ret) perror("pcmbuf_output");
             break;
         }
 #endif
